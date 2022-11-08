@@ -4,34 +4,10 @@
 
 using namespace std;
 
-void invalidInput() {
-    cout << "\nInvalid input, please try again\n";
-}
-
-void askQuestion(string question, string& output) {
-    cout << question;
-    cin >> output;
-}
-
-void askQuestion(string question, int& output) {
-    string answer;
-    while (true)
-    {
-        askQuestion(question, answer);
-        try {
-            output = stoi(answer.c_str());
-            break;
-        } catch (...) {
-            invalidInput();
-        }
-    }
-}
-
-void askQuestion(string question, char& output) {
-    string answer;
-    askQuestion(question, answer);
-    output = answer[0];
-}
+void askQuestion(string question, string &output);
+void askQuestion(string question, int &output);
+void askQuestion(string question, char &output);
+void invalidInput();
 
 int main() {
     // Main player choice that can be "red", "black" or "number"
@@ -167,11 +143,46 @@ int main() {
         }
 
         // Checks if player wants to exit the game. Only continues if answer is 'y'
-        askQuestion("Do you want to continue playing? [n/y]: ", yes_no);
-        if (yes_no != 'y') {
+        while (true){
+            askQuestion("Do you want to continue playing? [y]es / [n]o: ", yes_no);
+            if (yes_no == 'n' || yes_no == 'y') 
+                break; 
+            invalidInput();
+        }
+        if (yes_no == 'n') {
             cout << "Goodbye!\n";
             break;
-        }
     }
     return 0;
+    }
+}
+
+void askQuestion(string question, string& output) {
+    cout << question;
+    cin >> output;
+}
+
+void askQuestion(string question, int& output) {
+    string answer;
+    while (true)
+    {
+        askQuestion(question, answer);
+        try {
+            output = stoi(answer.c_str());
+            break;
+        } catch (...) {
+            invalidInput();
+        }
+    }
+}
+
+void askQuestion(string question, char& output) {
+    string answer;
+    askQuestion(question, answer);
+    output = answer[0];
+}
+
+void invalidInput()
+{
+    cout << "Invalid input, please try again\n";
 }
