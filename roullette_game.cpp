@@ -8,6 +8,11 @@ void invalidInput() {
     cout << "\nInvalid input, please try again\n";
 }
 
+void askQuestion(string question, string& output) {
+    cout << question;
+    cin >> output;
+}
+
 void askQuestion(string question, int& output) {
     string answer;
     while (true)
@@ -17,7 +22,7 @@ void askQuestion(string question, int& output) {
             output = stoi(answer.c_str());
             break;
         } catch (...) {
-            continue;
+            invalidInput();
         }
     }
 }
@@ -26,12 +31,6 @@ void askQuestion(string question, char& output) {
     string answer;
     askQuestion(question, answer);
     output = answer[0];
-
-}
-
-void askQuestion(string question, string output) {
-    cout << question;
-    cin >> output;
 }
 
 int main() {
@@ -44,7 +43,7 @@ int main() {
     // For number betting
     int chosen_number,
         // For multiple choice input
-        input = 0,
+        input,
         // For amount of money in the bet
         bet,
         // Amount of money a pleyer has, defaults to 1000kr
@@ -103,7 +102,7 @@ int main() {
             
             if ((choice == 'r') || (choice == 'b') || (choice == 'n'))
                 break;
-            invalidInput(); 
+            invalidInput();  
         }
 
         // Get a valid number if number is choosen
