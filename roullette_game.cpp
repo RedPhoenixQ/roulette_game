@@ -110,7 +110,7 @@ int main() {
             while (true)
             {
                 askQuestion("Please choose a number (1-36): ", chosen_number);
-                if (chosen_number >= 1 || chosen_number <= 36) {
+                if (chosen_number >= 1 && chosen_number <= 36) {
                     break;
                 }
                 invalidInput();
