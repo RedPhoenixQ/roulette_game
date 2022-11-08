@@ -6,16 +6,17 @@ using namespace std;
 
 void askQuestion(string question, string &output);
 void askQuestion(string question, int &output);
-void askQuestion(string question, char &output);
+void invalidInput(string err);
 void invalidInput();
 
 int main() {
-    // Main player choice that can be "red", "black" or "number"
-    char choice,
-        // For yes or no questions
-        yes_no;
+    
+    // Main player choice that can be "red", "black" or a number that will be parsed by the code into int chosen_number
+    string choice,
     // What color a give random roulette number represents
-    string color;
+        color,
+    // For yes or no questions
+        yes_no;
     // For number betting
     int chosen_number,
         // For multiple choice input
@@ -57,7 +58,7 @@ int main() {
             {
                 bet = 500;
             } else {
-                invalidInput();
+                invalidInput("please choose a number between 1 and 3");
                 continue;
             }
 
@@ -74,23 +75,25 @@ int main() {
         // Get valid bet input
         while (true)
         {
-            askQuestion("Please choose a color (\e[1m[r]ed\e[0m or \e[1m[b]lack\e[0m) or choose a \e[1m[n]umber\e[0m: ", choice);
+            askQuestion("Please choose a color (\e[1m[r]ed\e[0m or \e[1m[b]lack\e[0m) or choose a \e[1mnumber\e[0m (1-36): ", choice);
             
-            if ((choice == 'r') || (choice == 'b') || (choice == 'n'))
-                break;
-            invalidInput();  
-        }
-
-        // Get a valid number if number is choosen
-        if (choice == 'n') {
-            while (true)
-            {
-                askQuestion("Please choose a number (1-36): ", chosen_number);
-                if (chosen_number >= 1 && chosen_number <= 36) {
+            try {
+                chosen_number = stoi(choice.c_str());
+                if (chosen_number < 1) {
+                    invalidInput("number is too low");
+                } else if (chosen_number > 36) {
+                    invalidInput("number is too high");
+                } else {
                     break;
                 }
-                invalidInput();
-            };
+            } catch (...){
+                if (choice[0] == 'r' || choice[0] == 'b'){
+                    // Reset chosen number so that winning number payout isn't accidentally given 
+                    chosen_number = 0;
+                    break;
+                }
+                invalidInput();  
+            }  
         }
 
         // Create a random number and get the winning color
@@ -107,13 +110,13 @@ int main() {
         cout  << endl << setw(25) << "The winning number is: \e[1m" << random << " " << color << "\e[0m\n";
 
         // Check if player won and multiply bet by multiplier for color and number bets
-        if (choice == color[0]) {
+        if (choice[0] == color[0]) {
             win = true;
             bet *= 2;
             cout << endl << setw(20)
                  << "You won on color \e[1m" << color << "!\e[0m\n\n";
         }
-        else if (choice == 'n' && chosen_number == random)
+        else if (chosen_number == random)
         {
             win = true;
             bet *= 10;
@@ -145,16 +148,16 @@ int main() {
         // Checks if player wants to exit the game. Only continues if answer is 'y'
         while (true){
             askQuestion("Do you want to continue playing? [y]es / [n]o: ", yes_no);
-            if (yes_no == 'n' || yes_no == 'y') 
+            if (yes_no[0] == 'n' || yes_no[0] == 'y') 
                 break; 
             invalidInput();
         }
-        if (yes_no == 'n') {
+        if (yes_no[0] == 'n') {
             cout << "Goodbye!\n";
             break;
+        }
     }
     return 0;
-    }
 }
 
 void askQuestion(string question, string& output) {
@@ -171,18 +174,17 @@ void askQuestion(string question, int& output) {
             output = stoi(answer.c_str());
             break;
         } catch (...) {
-            invalidInput();
+            invalidInput("please input a number");
         }
     }
 }
 
-void askQuestion(string question, char& output) {
-    string answer;
-    askQuestion(question, answer);
-    output = answer[0];
+void invalidInput(string err)
+{
+    cout << "Invalid input, " << err << endl;
 }
 
 void invalidInput()
 {
-    cout << "Invalid input, please try again\n";
+    cout << "Invalid input, please try again" << endl;
 }
