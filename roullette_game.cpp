@@ -10,12 +10,9 @@ void invalidInput() {
 
 void askQuestion(string question, int& output) {
     string answer;
-
     while (true)
     {
-        cout << question;
-        cin >> answer;
-
+        askQuestion(question, answer);
         try {
             output = stoi(answer.c_str());
             break;
@@ -27,10 +24,14 @@ void askQuestion(string question, int& output) {
 
 void askQuestion(string question, char& output) {
     string answer;
-    cout << question;
-    cin >> answer;
+    askQuestion(question, answer);
     output = answer[0];
 
+}
+
+void askQuestion(string question, string output) {
+    cout << question;
+    cin >> output;
 }
 
 int main() {
