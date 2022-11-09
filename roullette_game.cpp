@@ -24,10 +24,10 @@ int main() {
 
     // Main player choice that can be "red", "black" or a number that will be parsed by the code into int chosen_number
     string choice,
-        // What color a give random roulette number represents
-        color,
         // For yes or no questions
-        yes_no;
+        yes_no,
+        // What color a give random roulette number represents
+        color;
         // For number betting
     int chosen_number,
         // For multiple choice input
@@ -51,18 +51,17 @@ int main() {
     cout << "Your balance is: " + BOLD << account << NOBOLD + "kr" << endl;
 
     // Loop the roulette game until stopped
-    while (true)
-    {
+    while (true) {
         // Get valid bet
         while (true) {
-            askQuestion("How much do you want to bet?: ", bet);
+            askQuestion("How much money do you want to bet?: ", bet);
 
             // Can't bet more than you have
             if (bet > account) {
                 cout << "You do not hav enough money for that bet. Your current balance is "  + BOLD << account << NOBOLD + "kr." << endl;
             } else {
                 account -= bet;
-                cout << "You've bet " + BOLD << bet << NOBOLD << endl;
+                cout << "You've bet " + BOLD << bet << NOBOLD + "kr" << endl;
                 break;
             }
         }
@@ -82,7 +81,7 @@ int main() {
                     break;
                 }
             } catch (...){
-                if (choice[0] == RED || choice[0] == BLACK){
+                if (choice[0] == RED || choice[0] == BLACK) {
                     // Reset chosen number so that winning number payout isn't accidentally given 
                     chosen_number = 0;
                     break;
@@ -102,9 +101,10 @@ int main() {
         }
 
         // Diplay winning number
-        cout  << INDENT + "The winning number is: " + BOLD << random << " " << color << NOBOLD << endl;
+        cout << endl << "The winning number is: " + BOLD << random << " " << color << NOBOLD << endl << endl;
 
         // Check if player won and multiply bet by multiplier for color and number bets
+        //  First if will not accidentaly be true if choice was a number since stoi() would fail if choice[0] wasn't a number
         if (choice[0] == color[0]) {
             win = true;
             bet *= 2;
@@ -114,9 +114,9 @@ int main() {
         {
             win = true;
             bet *= 10;
-            cout << INDENT + "You " + BOLD + "WON" + NOBOLD + " with the number " + BOLD << chosen_number << "!" + NOBOLD << endl;
+            cout << INDENT + "You " + BOLD + "WON" + NOBOLD + " with the number " + BOLD << chosen_number << "!" + NOBOLD << endl << endl;
         } else {
-            cout << INDENT +  BOLD + "You Lost" + NOBOLD << endl;
+            cout << INDENT +  BOLD + "You Lost" + NOBOLD << endl << endl;
         }
 
         // Display winnings and add bet to money
@@ -130,8 +130,7 @@ int main() {
         cout << "Your balance is: " + BOLD << account << NOBOLD + "kr" << endl;
 
         // Exit game and display bankrupt message if money <= 0
-        if (account <= 0)
-        {
+        if (account <= 0) {
             cout << "You have gone backrupt. Please come back another time" << endl;
             break;
         }
