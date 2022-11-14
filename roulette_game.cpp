@@ -35,7 +35,7 @@ int main()
         input,
         // For amount of money in the bet
         bet,
-        // Amount of money a pleyer has, defaults to 1000kr
+        // Amount of money a player has, defaults to 1000kr
         account = 1000,
         // Random number from roulette wheel
         random;
@@ -83,7 +83,7 @@ int main()
             // Can't bet more than you have
             if (bet > account)
             {
-                cout << "You do not hav enough money for that bet. Your current balance is " + BOLD
+                cout << "You do not have enough money for that bet. Your current balance is " + BOLD
                      << account
                      << NOBOLD + "kr."
                      << endl;
@@ -133,7 +133,7 @@ int main()
         else
             color = "red";
 
-        // Diplay winning number
+        // Display winning number
         cout << endl
              << "The winning number is: " + BOLD
              << random
@@ -144,7 +144,7 @@ int main()
              << endl;
 
         // Check if player won and multiply bet by multiplier for color and number bets
-        //  First if will not accidentaly be true if choice was a number since stoi() would fail if choice[0] wasn't a number
+        //  First if will not accidentally be true if choice was a number since stoi() would fail if choice[0] wasn't a number
         if (choice[0] == color[0])
         {
             win = true;
@@ -192,7 +192,7 @@ int main()
         // Exit game and display bankrupt message if money <= 0
         if (account <= 0)
         {
-            cout << "You have gone backrupt. Please come back another time"
+            cout << "You have gone bankrupt. Please come back another time"
                  << endl;
             break;
         }
