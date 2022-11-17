@@ -9,8 +9,7 @@ void askQuestion(string question, int &output);
 void invalidInput(string err);
 void invalidInput();
 
-int main()
-{
+int main() {
     // Constants for comparisons to make the code more readable
     const char BLACK = 'b',
                RED = 'r',
@@ -39,34 +38,26 @@ int main()
         account = 1000,
         // Random number from roulette wheel
         random;
-    // I a given round was won or not
+    // If a given round was won or not
     bool win = false;
 
     // Seed rand with current time
     srand(time(0));
 
     // Welcome message
-    cout << INDENT + "Welcome to Roulette!"
-         << endl
-         << endl;
+    cout << INDENT + "Welcome to Roulette!" << endl << endl;
 
     // Show balance at the start of the game
-    cout << "Your balance is: " + BOLD
-         << account
-         << NOBOLD + "kr"
-         << endl;
+    cout << "Your balance is: " + BOLD << account << NOBOLD + "kr" << endl;
 
     // Loop the roulette game until stopped
-    while (true)
-    {
+    while (true) {
         // Get valid bet
-        while (true)
-        {
+        while (true) {
             askQuestion("How much money do you want to bet?: " + ENDL + "  [1] 100kr" + ENDL + "  [2] 300kr" + ENDL + "  [3] 500kr" + ENDL + ": ", input);
 
             // Translate input list number to bet value
-            switch (input)
-            {
+            switch (input) {
             case 1:
                 bet = 100;
                 break;
@@ -81,31 +72,20 @@ int main()
                 continue;
             }
             // Can't bet more than you have
-            if (bet > account)
-            {
-                cout << "You do not have enough money for that bet. Your current balance is " + BOLD
-                     << account
-                     << NOBOLD + "kr."
-                     << endl;
-            }
-            else
-            {
+            if (bet > account) {
+                cout << "You do not have enough money for that bet. Your current balance is " + BOLD << account << NOBOLD + "kr." << endl;
+            } else {
                 account -= bet;
-                cout << "You've bet " + BOLD
-                     << bet
-                     << NOBOLD + "kr"
-                     << endl;
+                cout << "You've bet " + BOLD << bet << NOBOLD + "kr" << endl;
                 break;
             }
         }
 
         // Get valid bet input
-        while (true)
-        {
+        while (true) {
             askQuestion("Please choose a color (" + BOLD + "[r]ed" + NOBOLD + " or " + BOLD + "[b]lack" + NOBOLD + ") or choose a " + BOLD + "number" + NOBOLD + " (1-36): ", choice);
 
-            try
-            {
+            try {
                 chosen_number = stoi(choice.c_str());
                 if (chosen_number < 1)
                     invalidInput("number is too low");
@@ -113,11 +93,8 @@ int main()
                     invalidInput("number is too high");
                 else
                     break;
-            }
-            catch (...)
-            {
-                if (choice[0] == RED || choice[0] == BLACK)
-                {
+            } catch (...) {
+                if (choice[0] == RED || choice[0] == BLACK) {
                     // Reset chosen number so that winning number payout isn't accidentally given
                     chosen_number = 0;
                     break;
@@ -134,120 +111,75 @@ int main()
             color = "red";
 
         // Display winning number
-        cout << endl
-             << "The winning number is: " + BOLD
-             << random
-             << " "
-             << color
-             << NOBOLD
-             << endl
-             << endl;
+        cout << endl << "The winning number is: " + BOLD << random << " " << color << NOBOLD << endl << endl;
 
         // Check if player won and multiply bet by multiplier for color and number bets
         //  First if will not accidentally be true if choice was a number since stoi() would fail if choice[0] wasn't a number
-        if (choice[0] == color[0])
-        {
+        if (choice[0] == color[0]) {
             win = true;
             bet *= 2;
-            cout << INDENT + "You won on color " + BOLD
-                 << color
-                 << "!" + NOBOLD
-                 << endl
-                 << endl;
-        }
-        else if (chosen_number == random)
-        {
+            cout << INDENT + "You won on color " + BOLD << color << "!" + NOBOLD << endl << endl;
+        } else if (chosen_number == random) {
             win = true;
             bet *= 10;
-            cout << INDENT + "You " + BOLD + "WON" + NOBOLD + " with the number " + BOLD
-                 << chosen_number
-                 << "!" + NOBOLD
-                 << endl
-                 << endl;
-        }
-        else
-        {
-            cout << INDENT + BOLD + "You Lost" + NOBOLD
-                 << endl
-                 << endl;
+            cout << INDENT + "You " + BOLD + "WON" + NOBOLD + " with the number " + BOLD << chosen_number << "!" + NOBOLD << endl << endl;
+        } else {
+            cout << INDENT + BOLD + "You Lost" + NOBOLD << endl << endl;
         }
 
         // Display winnings and add bet to money
-        if (win)
-        {
+        if (win) {
             win = false;
             account += bet;
-            cout << "Your winnings: " + BOLD
-                 << bet
-                 << NOBOLD + "kr"
-                 << endl;
+            cout << "Your winnings: " + BOLD << bet << NOBOLD + "kr" << endl;
         }
 
         // Display balance
-        cout << "Your balance is: " + BOLD
-             << account
-             << NOBOLD + "kr"
-             << endl;
+        cout << "Your balance is: " + BOLD << account << NOBOLD + "kr" << endl;
 
         // Exit game and display bankrupt message if money <= 0
-        if (account <= 0)
-        {
-            cout << "You have gone bankrupt. Please come back another time"
-                 << endl;
+        if (account <= 0) {
+            cout << "You have gone bankrupt. Please come back another time" << endl;
             break;
         }
 
         // Checks if player wants to exit the game. Only continues if answer is 'y'
-        while (true)
-        {
+        while (true){
             askQuestion("Do you want to continue playing? [y]es / [n]o: ", yes_no);
             if (yes_no[0] == YES || yes_no[0] == NO)
                 break;
             invalidInput();
         }
-        if (yes_no[0] == NO)
-        {
-            cout << "Goodbye!"
-                 << endl;
+        if (yes_no[0] == NO) {
+            cout << "Goodbye!" << endl;
             break;
         }
     }
     return 0;
 }
 
-void askQuestion(string question, string &output)
-{
+void askQuestion(string question, string &output) {
     cout << question;
     cin >> output;
 }
 
-void askQuestion(string question, int &output)
-{
+void askQuestion(string question, int &output) {
     string answer;
-    while (true)
-    {
+    while (true) {
         askQuestion(question, answer);
-        try
-        {
+        try {
             output = stoi(answer.c_str());
             break;
-        }
-        catch (...)
-        {
+        } catch (...) {
             invalidInput("please input a number");
         }
     }
 }
 
-void invalidInput(string err)
-{
-    cout << "Invalid input, "
-         << err
-         << endl;
+void invalidInput(string err) {
+    cout << "Invalid input, " << err << endl;
 }
 
-void invalidInput()
-{
-    cout << "Invalid input, please try again"
-         << endl;
+void invalidInput() {
+    cout << "Invalid input, please try again" << endl;
 }
