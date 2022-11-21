@@ -1,14 +1,11 @@
 #include <iostream>
-#include <string>
 #include <ctime>
 
 using namespace std;
 
 void askQuestion(string question, string &output);
-void askQuestion(string question, char &output);
-// void askQuestion(string question, int &output);
-void invalidInput(string err);
-void invalidInput();
+void askQuestion(string question, int &output);
+void invalidInput(string message = "please try again");
 
 int main() {
     // Constants for comparisons to make the code more readable
@@ -26,13 +23,13 @@ int main() {
     // Main player choice that can be "red", "black" or a number that will be parsed by the code into int chosen_number
     string choice,
         // What color a give random roulette number represents
-        color;
-    // For yes or no questions
-    char yes_no,
-        // For multiple choice input
-        input;
+        color,
+        // For yes or no questions
+        yes_no;
     // For number betting
     int chosen_number,
+        // For multiple choice input
+        input,
         // For amount of money in the bet
         bet,
         // Amount of money a player has, defaults to 1000kr
@@ -59,13 +56,13 @@ int main() {
 
             // Translate input list number to bet value
             switch (input) {
-            case '1':
+            case 1:
                 bet = 100;
                 break;
-            case '2':
+            case 2:
                 bet = 300;
                 break;
-            case '3':
+            case 3:
                 bet = 500;
                 break;
             default:
@@ -147,11 +144,11 @@ int main() {
         // Checks if player wants to exit the game. Only continues if answer is 'y'
         while (true){
             askQuestion("Do you want to continue playing? [y]es / [n]o: ", yes_no);
-            if (yes_no == YES || yes_no == NO)
+            if (yes_no[0] == YES || yes_no[0] == NO)
                 break;
             invalidInput();
         }
-        if (yes_no == NO) {
+        if (yes_no[0] == NO) {
             cout << "Goodbye!" << endl;
             break;
         }
@@ -164,29 +161,19 @@ void askQuestion(string question, string &output) {
     cin >> output;
 }
 
-void askQuestion(string question, char &output) {
+void askQuestion(string question, int &output) {
     string answer;
-    askQuestion(question, answer);
-    output = answer[0];
+    while (true) {
+        askQuestion(question, answer);
+        try {
+            output = stoi(answer.c_str());
+            break;
+        } catch (...) {
+            invalidInput("please input a number");
+        }
+    }
 }
 
-// void askQuestion(string question, int &output) {
-//     string answer;
-//     while (true) {
-//         askQuestion(question, answer);
-//         try {
-//             output = stoi(answer.c_str());
-//             break;
-//         } catch (...) {
-//             invalidInput("please input a number");
-//         }
-//     }
-// }
-
-void invalidInput(string err) {
-    cout << "Invalid input, " << err << endl;
-}
-
-void invalidInput() {
-    cout << "Invalid input, please try again" << endl;
+void invalidInput(string message) {
+    cout << "Invalid input, " << message << endl;
 }
